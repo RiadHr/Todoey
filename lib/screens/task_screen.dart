@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todey3_flutter/screens/add_task_screen.dart';
 import '../models/task.dart';
+import '../models/task_data.dart';
 import '../widgets/task_list.dart';
 
 class TaskScreen extends StatefulWidget {
   static String id = 'TaskScreen';
 
-  final List<Task> tasks;
-  TaskScreen({required this.tasks});
+  // final List<Task> tasks;
+  // TaskScreen({required this.tasks});
 
   @override
   State<TaskScreen> createState() => _TaskScreenState();
@@ -17,7 +19,7 @@ class _TaskScreenState extends State<TaskScreen> {
   Widget bottomSheetHandler(BuildContext context) => AddTaskScreen(
     addTaskHandler: (taskName){
         setState(() {
-          widget.tasks.add(Task(name: taskName));
+           Provider.of<TaskData>(context,listen: false).addTask(Task(name: taskName));
         });
         print('taskname = $taskName');
   });
@@ -88,10 +90,9 @@ class _TaskScreenState extends State<TaskScreen> {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: TaskList(
-                  tasks: widget.tasks,checkboxCallback: (value, int index) {
+                child: TaskList(checkboxCallback: (value, int index) {
                       setState(() {
-                        widget.tasks[index].toggleDone();
+                        Provider.of<TaskData>(context).tasks[index].toggleDone();
                       });
                   },
                 ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todey3_flutter/models/task_data.dart';
 import 'package:todey3_flutter/widgets/task_tile.dart';
 import '../models/task.dart';
 
@@ -27,10 +29,10 @@ import '../models/task.dart';
 
 
 class TaskList extends StatefulWidget {
-  final List<Task> tasks;
+  // final List<Task> tasks;
   final Function checkboxCallback;
 
-  TaskList({required this.tasks,required this.checkboxCallback});
+  TaskList({required this.checkboxCallback});
 
   @override
   State<TaskList> createState() => _TaskListState();
@@ -41,22 +43,22 @@ class _TaskListState extends State<TaskList> {
   //   Task(name: 'buy milk'),
   //   Task(name: 'buy eggs')
   // ];
-
   @override
   Widget build(BuildContext context) {
+    List<Task> tasksProvided = Provider.of<TaskData>(context).tasks;
     return ListView.builder(itemBuilder: (context, index) {
       return TaskTile(
-          taskTitle: widget.tasks[index].name,
-          isChecked: widget.tasks[index].isDone,
+          taskTitle: tasksProvided[index].name,
+          isChecked: tasksProvided[index].isDone,
           checkboxCallback:
             (value) {
                 setState(() {
-                  widget.tasks[index].toggleDone();
+                  tasksProvided[index].toggleDone();
                 });
             }
       );
     },
-    itemCount: widget.tasks.length,);
+    itemCount: tasksProvided.length,);
   }
 }
 
