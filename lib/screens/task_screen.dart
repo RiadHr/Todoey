@@ -34,6 +34,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<Task> providedTasks =Provider.of<TaskData>(context).tasks;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -92,7 +93,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 ),
                 child: TaskList(checkboxCallback: (value, int index) {
                       setState(() {
-                        Provider.of<TaskData>(context).tasks[index].toggleDone();
+                        providedTasks[index].toggleDone();
                       });
                   },
                 ),
