@@ -7,8 +7,19 @@ class TaskData extends ChangeNotifier{
     Task(name: 'buy eggs')
   ];
 
+  int get taskCount{
+    return tasks.length;
+  }
+
   void addTask(Task task){
     tasks.add(task);
     notifyListeners();
   }
+
+  void removeTask(Task task){
+    tasks.remove(task);
+    notifyListeners();
+  }
+
+
 }

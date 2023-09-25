@@ -16,25 +16,29 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
-  Widget bottomSheetHandler(BuildContext context) => AddTaskScreen(
-    addTaskHandler: (taskName){
+  Widget bottomSheetHandler(BuildContext context) =>
+      AddTaskScreen(addTaskHandler: (taskName) {
         setState(() {
-           Provider.of<TaskData>(context,listen: false).addTask(Task(name: taskName));
+          Provider.of<TaskData>(context, listen: false)
+              .addTask(Task(name: taskName));
+          Navigator.pop(context);
         });
         print('taskname = $taskName');
-  });
-
+      });
 
   // List<Task> tasks =[
   //   Task(name: 'buy milk'),
   //   Task(name: 'buy eggs')
   // ];
 
-
-
   @override
   Widget build(BuildContext context) {
-    List<Task> providedTasks =Provider.of<TaskData>(context).tasks;
+    List<Task> providedTasks = Provider.of<TaskData>(context).tasks;
+    int? taskElement;
+    if (providedTasks.length != null) {
+      taskElement = providedTasks.length;
+    }
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -45,18 +49,19 @@ class _TaskScreenState extends State<TaskScreen> {
               },
             );
           },
-          child: Icon(Icons.add)),
+          child: const Icon(Icons.add)),
       body: Container(
         color: Colors.lightBlueAccent,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 50),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 40.0, vertical: 50),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 40,
                     child: Icon(
@@ -65,10 +70,10 @@ class _TaskScreenState extends State<TaskScreen> {
                       color: Colors.lightBlueAccent,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     'Todoey',
                     style: TextStyle(
                         color: Colors.white,
@@ -76,8 +81,8 @@ class _TaskScreenState extends State<TaskScreen> {
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    '12 task',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    '${taskElement} task',
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ],
               ),
@@ -91,14 +96,17 @@ class _TaskScreenState extends State<TaskScreen> {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: TaskList(checkboxCallback: (value, int index) {
-                      setState(() {
+                child: TaskList(
+                  checkboxCallback: (bool value, int index) {
+                    setState(
+                      () {
                         providedTasks[index].toggleDone();
-                      });
+                      },
+                    );
                   },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
